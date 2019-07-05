@@ -2,6 +2,8 @@ import expect from 'expect.js';
 import * as h from './helper/ui';
 import { stub } from 'sinon';
 import webApi from '../src/core/web_api';
+import sha256 from 'crypto-js/sha256';
+import Base64 from 'crypto-js/enc-base64';
 
 describe('mfa ro', function() {
   beforeEach(h.stubWebApis);
@@ -41,7 +43,7 @@ describe('mfa ro', function() {
               expect(
                 h.wasLoginAttemptedWith({
                   connection: 'db',
-                  username: 'someone@example.com',
+                  username: Base64.stringify(sha256('someone@example.com')),
                   password: 'mypass',
                   mfa_code: '123456'
                 })
